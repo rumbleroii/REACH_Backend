@@ -26,16 +26,14 @@ app.post('/create', (req, res) => {
         try {
           const dataArray = JSON.parse(data);
           const newData = req.body;
-          
-          let flag = 0;
-          dataArray.map((item) => {
-            if(item.id === newData.id) {
-              item = newData;
-              flag = 1;
+    
+          if(newData.id) {
+            for(let i=0;i<dataArray.length;i++) {
+              if(dataArray[i].id == newData.id) {
+                dataArray[i] = newData;
+              }
             }
-          })
-          // Adding ID
-          if(flag == 0) {
+          } else {
             newData.id = uniqid();
             dataArray.push(newData);
           }
