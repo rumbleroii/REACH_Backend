@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const uniqid = require('uniqid');
+
 // Filesystem
 const fs = require('fs');
 
@@ -24,6 +26,9 @@ app.post('/create', (req, res) => {
         try {
           const dataArray = JSON.parse(data);
           const newData = req.body;
+
+          // Adding ID
+          newData.id = uniqid();
 
           dataArray.push(newData);
       
@@ -52,10 +57,11 @@ app.delete('/delete/:id', (req, res) => {
         }
       
         try {
-
             const dataArray = JSON.parse(data);
             const newData = dataArray.filter((item) => item.id != req.params.id);
             const updatedData = JSON.stringify(newData, null, 2);
+
+            console.log(req.params.id);
         
             fs.writeFile(PATH, updatedData, (err) => {
                 if (err) {
@@ -64,12 +70,38 @@ app.delete('/delete/:id', (req, res) => {
                 console.log('Data appended successfully.');
                 }
             });
+
+            return res.status(200).json({
+            smessage: "Deleted!"
+            })
         } catch (error) {
           console.error('Error parsing JSON data:', error);
         }
     });
 })
 
+// GET
+app.get('/:id', (req, res) => {
+  fs.readFile(PATH, 'utf8', (err, data) => {
+      if (err) {
+        console.error('Error reading the JSON file:', err);
+        return;
+      }
+    
+      try {
+          const dataArray = JSON.parse(data);
+          const newData = dataArray.filter((item) => item.id == req.params.id);
+          const updatedData = JSON.stringify(newData, null, 2);
+      
+          return res.status(200).json({
+            data: newData
+          })
+
+      } catch (error) {
+        console.error('Error parsing JSON data:', error);
+      }
+  });
+})
 app.listen(PORT, () => {
     console.log(`Server Running in PORT: ${PORT}`);
 })
