@@ -80,6 +80,28 @@ app.delete('/delete/:id', (req, res) => {
     });
 })
 
+// GET ALL Data
+app.get('/all', (req, res) => {
+  fs.readFile(PATH, 'utf8', (err, data) => {
+      if (err) {
+        console.error('Error reading the JSON file:', err);
+        return;
+      }
+    
+      try {
+          const dataArray = JSON.parse(data);
+          const updatedData = JSON.stringify(dataArray, null, 2);
+          
+          return res.status(200).json({
+            data: dataArray
+          })
+
+      } catch (error) {
+        console.error('Error parsing JSON data:', error);
+      }
+  });
+})
+
 // GET
 app.get('/:id', (req, res) => {
   fs.readFile(PATH, 'utf8', (err, data) => {
@@ -102,6 +124,10 @@ app.get('/:id', (req, res) => {
       }
   });
 })
+
+
+
+
 app.listen(PORT, () => {
     console.log(`Server Running in PORT: ${PORT}`);
 })
