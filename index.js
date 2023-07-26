@@ -26,11 +26,19 @@ app.post('/create', (req, res) => {
         try {
           const dataArray = JSON.parse(data);
           const newData = req.body;
-
+          
+          let flag = 0;
+          dataArray.map((item) => {
+            if(item.id === newData.id) {
+              item = newData;
+              flag = 1;
+            }
+          })
           // Adding ID
-          newData.id = uniqid();
-
-          dataArray.push(newData);
+          if(flag == 0) {
+            newData.id = uniqid();
+            dataArray.push(newData);
+          }
       
           const updatedData = JSON.stringify(dataArray, null, 2);
       
@@ -87,7 +95,6 @@ app.get('/all', (req, res) => {
         console.error('Error reading the JSON file:', err);
         return;
       }
-    
       try {
           const dataArray = JSON.parse(data);
           const updatedData = JSON.stringify(dataArray, null, 2);
@@ -124,9 +131,6 @@ app.get('/:id', (req, res) => {
       }
   });
 })
-
-
-
 
 app.listen(PORT, () => {
     console.log(`Server Running in PORT: ${PORT}`);
