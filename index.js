@@ -26,6 +26,17 @@ app.post('/create', (req, res) => {
         try {
           const dataArray = JSON.parse(data);
           const newData = req.body;
+
+          // checkpoint
+          let count = 0;
+          for(let i=0;i<newData.checkpoint.length;i++) {
+            if(newData.checkpoint[i].status === true) {
+              count += 1;
+            }
+          }
+
+          newData.progress = (count / newData.checkpoint.length)* 100;
+          if(newData.progress === 100) newData.status = "Information";
     
           if(newData.id) {
             for(let i=0;i<dataArray.length;i++) {
@@ -37,6 +48,7 @@ app.post('/create', (req, res) => {
             newData.id = uniqid();
             dataArray.push(newData);
           }
+
       
           const updatedData = JSON.stringify(dataArray, null, 2);
       
