@@ -12,7 +12,8 @@ const PORT = 4000;
 // Middlewares
 app.use(express.json());
 app.use(cors());
-morgan('tiny');
+app.use(morgan('tiny'));
+
 // JSON.IO
 const SECRET_KEY="$2b$10$n172Tc8qjDF5mztsfXFOS.5EEg32uuaxwoLo19KNYkbA1v1VNmOZ6";
 const binID = "64c2a26db89b1e2299c6ac55"
@@ -85,9 +86,10 @@ app.post('/create', async (req, res) => {
           } else {
             newData.id = uniqid();
             dataArray.push(newData);
+            console.log(newData);
           }
-    
-    const result = await axiosInstance.put(`${binUrl}`, newData);
+          console.log(dataArray);
+    const result = await axiosInstance.put(`${binUrl}`, dataArray);
     return res.status(200).json({
       message: "Updated"
     })
