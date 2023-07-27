@@ -86,9 +86,7 @@ app.post('/create', async (req, res) => {
           } else {
             newData.id = uniqid();
             dataArray.push(newData);
-            console.log(newData);
           }
-          console.log(dataArray);
     const result = await axiosInstance.put(`${binUrl}`, dataArray);
     return res.status(200).json({
       message: "Updated"
