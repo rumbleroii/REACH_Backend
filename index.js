@@ -34,10 +34,10 @@ app.post('/create', (req, res) => {
               count += 1;
             }
           }
-
-          newData.progress = (count / newData.checkpoint.length)* 100;
+          
+          newData.progress = Math.floor((count / newData.checkpoint.length)* 100);
           if(newData.progress === 100) newData.status = "Information";
-    
+
           if(newData.id) {
             for(let i=0;i<dataArray.length;i++) {
               if(dataArray[i].id == newData.id) {
