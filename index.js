@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 const uniqid = require('uniqid');
 const axios = require('axios');
+const morgan = require('morgan');
 
 // Filesystem
 const fs = require('fs');
@@ -11,7 +12,7 @@ const PORT = 4000;
 // Middlewares
 app.use(express.json());
 app.use(cors());
-
+morgan('tiny');
 // JSON.IO
 const SECRET_KEY="$2b$10$n172Tc8qjDF5mztsfXFOS.5EEg32uuaxwoLo19KNYkbA1v1VNmOZ6";
 const binID = "64c2a26db89b1e2299c6ac55"
